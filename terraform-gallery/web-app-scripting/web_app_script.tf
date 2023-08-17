@@ -11,14 +11,11 @@ terraform {
 
 provider "azurerm" {
   features {}
-
   skip_provider_registration = true
 }
 
 variable "resource_group_name" {}
-
 variable "resource_name" {}
-
 variable "location" {}
 
 data "azurerm_resource_group" "rg" {
@@ -41,7 +38,7 @@ resource "null_resource" "prescript" {
   provisioner "local-exec" {
     command = "./pre-deployment.sh"
   }
-  depends_on = [ null_resource.chmod ]
+  depends_on = [null_resource.chmod]
 }
 
 resource "azurerm_service_plan" "service_plan" {
@@ -50,7 +47,7 @@ resource "azurerm_service_plan" "service_plan" {
   location            = var.location
   sku_name            = "P1v2"
   os_type             = "Windows"
-  depends_on = [ null_resource.prescript ]
+  depends_on          = [null_resource.prescript]
 }
 
 resource "azurerm_windows_web_app" "example" {
@@ -58,9 +55,8 @@ resource "azurerm_windows_web_app" "example" {
   resource_group_name = data.azurerm_resource_group.rg.name
   location            = var.location
   service_plan_id     = azurerm_service_plan.service_plan.id
-
   site_config {}
-  depends_on = [ null_resource.prescript ]
+  depends_on = [null_resource.prescript]
 }
 
 resource "null_resource" "postscript" {
@@ -70,5 +66,5 @@ resource "null_resource" "postscript" {
   provisioner "local-exec" {
     command = "./post-deployment.sh"
   }
-  depends_on = [ azurerm_windows_web_app.example, azurerm_service_plan.service_plan ]
+  depends_on = [azurerm_windows_web_app.example, azurerm_service_plan.service_plan]
 }
