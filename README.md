@@ -3,7 +3,6 @@
 Azure Deployment Environments (ADE) is a service that enables you to create and manage multiple environments for your Azure resources. You can use ADE to create environments for your dev, test, and production workloads. ADE provides a single pane of glass to manage your environments, and provides a consistent deployment experience across Azure services.
 
 This repository contains various resources related to ADE.
-Post deployment scripts.
 
 ## terraform-gallery
 

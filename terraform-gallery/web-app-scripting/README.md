@@ -6,7 +6,7 @@ This folder contains a Terraform template to deploy a simple Azure Web App. The 
 
 ## Pre and Post Deployment Scripts
 
-These are bin/sh scripts that are executed locally on the Terraform host machine. They are executed before and after the Terraform deployment. The scripts are used to perform tasks that are not supported by Terraform. For example, the scripts can be used to perform tasks such as creating a database, or running a database migration. The scripts are executed locally on the Terraform host machine, and not on the Azure VMs.
+These are bin/sh scripts that are executed locally on the ADE runner compute resource. They are executed before and after the Terraform resource or data deployments. The scripts are used to perform tasks that are not supported by Terraform. For example, the scripts can be used to perform tasks such as creating a database, or running a database migration.
 
 - [pre-deployment.sh](./pre-deployment.sh)
 - [post-deployment.sh](./post-deployment.sh)
