@@ -1,0 +1,14 @@
+name: WebApp-Scripting
+summary: Creates a web app
+description: Deploys an environment using Terraform containing a Web App.  Processes pre and post deployment scripts.
+runner: Terraform
+templatePath: web_app_script.tf
+parameters:
+  - id: "resource_name"
+    name: "Resource Name"
+    required: true
+    type: "string"
+  - id: "location"
+    name: "Location"
+    required: true
+    type: "string"
