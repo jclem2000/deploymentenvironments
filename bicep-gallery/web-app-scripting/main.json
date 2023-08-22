@@ -1,0 +1,104 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.20.4.51522",
+      "templateHash": "9734696738059121024"
+    }
+  },
+  "parameters": {
+    "resource_name": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]"
+    },
+    "utcValue": {
+      "type": "string",
+      "defaultValue": "[utcNow()]"
+    }
+  },
+  "variables": {
+    "$fxv#0": "# Get Date and message start of script\nD=`date`\necho \"Pre-Deployment script started $D\"\necho \"Pre-Deployment script started $D\" > script-status.txt\n#\n# Get the account that the script is running under and output it to the status file\naz account show\naz account show >> script-status.txt\n\n# Get formatted date to append to file name\nDF=`date +%Y%m%d%H%M%S`\n#\n# Save the script status file to Azure Storage\naz storage blob upload \\\n    --account-name a214143dcsa \\\n    --container-name tfdeployments \\\n    --name pre-script-status-$DF.txt \\\n    --file script-status.txt \\\n    --auth-mode login",
+    "$fxv#1": "# Get Date and message start of script\nD=`date`\necho \"Post-Deployment script started $D\"\necho \"Post-Deployment script started $D\" >> script-status.txt\n#\naz resource list --query \"[?name=='pre_script']\" -otable >> script-status.txt\n# Get formatted date to append to file name\nDF=`date +%Y%m%d%H%M%S`\n#\n# Save the script status file to Azure Storage\naz storage blob upload \\\n    --account-name a214143dcsa \\\n    --container-name tfdeployments \\\n    --name post-script-status-$DF.txt \\\n    --file script-status.txt \\\n    --auth-mode login"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2019-10-01-preview",
+      "name": "pre_script",
+      "location": "[parameters('location')]",
+      "kind": "AzureCLI",
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "/subscriptions/9fa642e3-4211-4d88-b4a4-effb9af9ed02/resourcegroups/a300004-d1-musea2-project-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/a300004-project-mi": {}
+        }
+      },
+      "properties": {
+        "azCliVersion": "2.9.1",
+        "scriptContent": "[variables('$fxv#0')]",
+        "arguments": "",
+        "retentionInterval": "P1D",
+        "cleanupPreference": "OnSuccess",
+        "forceUpdateTag": "[parameters('utcValue')]"
+      }
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2019-08-01",
+      "name": "[format('{0}-app-svc-plan', parameters('resource_name'))]",
+      "location": "[parameters('location')]",
+      "kind": "app",
+      "sku": {
+        "name": "F1"
+      },
+      "properties": {},
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deploymentScripts', 'pre_script')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2019-08-01",
+      "name": "[format('{0}-web-app', parameters('resource_name'))]",
+      "location": "[parameters('location')]",
+      "kind": "app",
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', format('{0}-app-svc-plan', parameters('resource_name')))]",
+        "siteConfig": {}
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', format('{0}-app-svc-plan', parameters('resource_name')))]",
+        "[resourceId('Microsoft.Resources/deploymentScripts', 'pre_script')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2019-10-01-preview",
+      "name": "post_script",
+      "location": "[parameters('location')]",
+      "kind": "AzureCLI",
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "/subscriptions/9fa642e3-4211-4d88-b4a4-effb9af9ed02/resourcegroups/a300004-d1-musea2-project-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/a300004-project-mi": {}
+        }
+      },
+      "properties": {
+        "azCliVersion": "2.9.1",
+        "scriptContent": "[variables('$fxv#1')]",
+        "arguments": "",
+        "retentionInterval": "P1D",
+        "cleanupPreference": "OnSuccess",
+        "forceUpdateTag": "[parameters('utcValue')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', format('{0}-web-app', parameters('resource_name')))]"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+name: web-app-script-bicep
+version: 1.0.0
+summary: Creates a web app
+description: Deploys an environment using Bicep to ARM containing a Web App.  Processes pre and post deployment scripts.
+runner: ARM
+templatePath: main.json
+parameters:
+  - id: "resource_name"
+    name: "Resource Name"
+    required: true
+    type: "string"
