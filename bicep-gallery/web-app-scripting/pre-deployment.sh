@@ -12,7 +12,7 @@ DF=`date +%Y%m%d%H%M%S`
 #
 # Save the script status file to Azure Storage
 az storage blob upload \
-    --account-name a214143dcsa \
+    --account-name <your local storageAccountName> \
     --container-name tfdeployments \
     --name pre-script-status-$DF.txt \
     --file script-status.txt \

@@ -10,7 +10,7 @@ resource pre_script 'Microsoft.Resources/deploymentScripts@2019-10-01-preview' =
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '/subscriptions/9fa642e3-4211-4d88-b4a4-effb9af9ed02/resourcegroups/a300004-d1-musea2-project-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/a300004-project-mi': {}
+      '<your user assigned managed identity>': {}
     }
   }
   properties: {
@@ -52,7 +52,7 @@ resource post_script 'Microsoft.Resources/deploymentScripts@2019-10-01-preview' 
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '/subscriptions/9fa642e3-4211-4d88-b4a4-effb9af9ed02/resourcegroups/a300004-d1-musea2-project-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/a300004-project-mi': {}
+      '<your user assigned managed identity>': {}
     }
   }
   properties: {

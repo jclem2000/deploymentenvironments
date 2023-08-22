@@ -1,4 +1,4 @@
-# web-app-scripting-bicep
+# web-app-scripting
 
 ## Overview
 
@@ -20,13 +20,25 @@ These scripts that are executed within a container instance in Azure. They are e
 
 ARM template [main.json](./main.json)
 
+```text
+Note:  The references to a Storage Account name and User Assigned Managed Identity must be updated to reflect your environment.
+```
+
 Bicep template [main.bicep](./main.bicep)
+
+```text
+Note:  The references to User Assigned Managed Identity must be updated to reflect your environment.
+```
 
 The Bicep template references two scripts:
 
 [pre-deployment.sh](./pre-deployment.sh)
 
 [post-deployment.sh](./post-deployment.sh)
+
+```text
+Note:  The references to a Storage Account name must be updated to reflect your environment.
+```
 
 This template provides a simple Bicep/ARM configuration to deploy an Azure Web App via a Azure App Services Plan and a Windows Web App. Descriptions of the resources can be found here:
 

@@ -22,8 +22,8 @@
     }
   },
   "variables": {
-    "$fxv#0": "# Get Date and message start of script\nD=`date`\necho \"Pre-Deployment script started $D\"\necho \"Pre-Deployment script started $D\" > script-status.txt\n#\n# Get the account that the script is running under and output it to the status file\naz account show\naz account show >> script-status.txt\n\n# Get formatted date to append to file name\nDF=`date +%Y%m%d%H%M%S`\n#\n# Save the script status file to Azure Storage\naz storage blob upload \\\n    --account-name a214143dcsa \\\n    --container-name tfdeployments \\\n    --name pre-script-status-$DF.txt \\\n    --file script-status.txt \\\n    --auth-mode login",
-    "$fxv#1": "# Get Date and message start of script\nD=`date`\necho \"Post-Deployment script started $D\"\necho \"Post-Deployment script started $D\" >> script-status.txt\n#\naz resource list --query \"[?name=='pre_script']\" -otable >> script-status.txt\n# Get formatted date to append to file name\nDF=`date +%Y%m%d%H%M%S`\n#\n# Save the script status file to Azure Storage\naz storage blob upload \\\n    --account-name a214143dcsa \\\n    --container-name tfdeployments \\\n    --name post-script-status-$DF.txt \\\n    --file script-status.txt \\\n    --auth-mode login"
+    "$fxv#0": "# Get Date and message start of script\nD=`date`\necho \"Pre-Deployment script started $D\"\necho \"Pre-Deployment script started $D\" > script-status.txt\n#\n# Get the account that the script is running under and output it to the status file\naz account show\naz account show >> script-status.txt\n\n# Get formatted date to append to file name\nDF=`date +%Y%m%d%H%M%S`\n#\n# Save the script status file to Azure Storage\naz storage blob upload \\\n    --account-name <your local storageAccountName> \\\n    --container-name tfdeployments \\\n    --name pre-script-status-$DF.txt \\\n    --file script-status.txt \\\n    --auth-mode login",
+    "$fxv#1": "# Get Date and message start of script\nD=`date`\necho \"Post-Deployment script started $D\"\necho \"Post-Deployment script started $D\" >> script-status.txt\n#\naz resource list --query \"[?name=='pre_script']\" -otable >> script-status.txt\n# Get formatted date to append to file name\nDF=`date +%Y%m%d%H%M%S`\n#\n# Save the script status file to Azure Storage\naz storage blob upload \\\n    --account-name <your local storageAccountName> \\\n    --container-name tfdeployments \\\n    --name post-script-status-$DF.txt \\\n    --file script-status.txt \\\n    --auth-mode login"
   },
   "resources": [
     {
@@ -35,7 +35,7 @@
       "identity": {
         "type": "UserAssigned",
         "userAssignedIdentities": {
-          "/subscriptions/9fa642e3-4211-4d88-b4a4-effb9af9ed02/resourcegroups/a300004-d1-musea2-project-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/a300004-project-mi": {}
+          "<your user assigned managed identity": {}
         }
       },
       "properties": {
@@ -85,7 +85,7 @@
       "identity": {
         "type": "UserAssigned",
         "userAssignedIdentities": {
-          "/subscriptions/9fa642e3-4211-4d88-b4a4-effb9af9ed02/resourcegroups/a300004-d1-musea2-project-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/a300004-project-mi": {}
+          "<your user assigned managed identity": {}
         }
       },
       "properties": {
